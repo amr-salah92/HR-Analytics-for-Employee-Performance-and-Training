@@ -96,12 +96,10 @@ Based on the insights and findings above, we recommend the HR team consider the 
 For this analysis, we utilized:
 
 - **SQL:** Used for data cleaning, transformation, and querying to extract relevant employee insights.
-- **Python (Pandas, Matplotlib, Seaborn):** Employed for advanced data analysis, visualization, and statistical modeling.
-- **Tableau:** Developed interactive dashboards to visualize trends in employee demographics, performance, and satisfaction.
+- **Tableau:** Developed interactive dashboards to visualize trends in employee demographics, performance, and satisfaction. 
 
-The SQL queries used to inspect and clean the data for this analysis can be found here [link].\
-Targeted SQL queries regarding various business questions can be found here [link].\
-An interactive Tableau dashboard used to report and explore HR trends can be found here [link].
+The SQL queries used to inspect and clean the data for this analysis & Targeted SQL queries regarding various business questions can be found here [link]().
+An interactive Tableau dashboard used to report and explore HR trends can be found here [link](https://public.tableau.com/app/profile/amr.salah6779/viz/training_17391989311920/TrainingDashboard#1).
 
 ---
 
