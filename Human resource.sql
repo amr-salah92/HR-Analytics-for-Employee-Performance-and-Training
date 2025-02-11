@@ -396,3 +396,69 @@ SELECT `Current Employee Rating`,
 FROM cleand
 GROUP BY `Current Employee Rating`
 ORDER BY Avg_Satisfaction DESC;
+
+
+-- age Analysis (Best Rating Age )
+SELECT Age ,
+COUNT(*) AS TOTAL_COUNT
+FROM cleand
+WHERE EmployeeStatus = 'Active'  AND `Current Employee Rating` BETWEEN 4 AND 5 
+GROUP BY Age ;
+
+
+-- age Analysis (Best Rating Age Bucket)
+SELECT  
+CASE  
+WHEN Age BETWEEN 23 AND 29  THEN '20_BUCKET' 
+WHEN Age BETWEEN 30 AND 39  THEN '30_BUCKET' 
+WHEN Age BETWEEN 40 AND 49 THEN '40_BUCKET' 
+WHEN Age BETWEEN 50 AND 59  THEN '50_BUCKET' 
+WHEN Age BETWEEN 60 AND 69  THEN '60_BUCKET' 
+WHEN Age BETWEEN 70 AND 79 THEN '70_BUCKET' 
+WHEN Age BETWEEN 80 AND 89 THEN '80_BUCKET' 
+ELSE 'OTHERS'
+END AS AGE_BUCKET,
+COUNT(*) AS TOTAL_COUNT
+FROM cleand
+WHERE EmployeeStatus = 'Active'  AND `Current Employee Rating` BETWEEN 4 AND 5 
+GROUP BY AGE_BUCKET 
+ORDER BY TOTAL_COUNT DESC;
+
+
+
+-- Define the CTE to calculate the total sum of employees
+WITH TotalEmployees AS (
+    SELECT COUNT(*) AS TOTAL_SUM
+    FROM cleand
+    WHERE EmployeeStatus = 'Active' AND `Current Employee Rating` BETWEEN 4 AND 5
+),
+AgeBuckets AS (
+    SELECT 
+        CASE 
+            WHEN Age BETWEEN 23 AND 29 THEN '20_BUCKET'
+            WHEN Age BETWEEN 30 AND 39 THEN '30_BUCKET'
+            WHEN Age BETWEEN 40 AND 49 THEN '40_BUCKET'
+            WHEN Age BETWEEN 50 AND 59 THEN '50_BUCKET'
+            WHEN Age BETWEEN 60 AND 69 THEN '60_BUCKET'
+            WHEN Age BETWEEN 70 AND 79 THEN '70_BUCKET'
+            WHEN Age BETWEEN 80 AND 89 THEN '80_BUCKET'
+            ELSE 'OTHER'
+        END AS AGE_BUCKET,
+        COUNT(*) AS TOTAL_COUNT
+    FROM 
+        cleand
+    WHERE 
+        EmployeeStatus = 'Active' 
+        AND `Current Employee Rating` BETWEEN 4 AND 5
+    GROUP BY 
+        AGE_BUCKET
+)
+-- Calculate the percentage of each age bucket
+SELECT 
+    a.AGE_BUCKET,
+    a.TOTAL_COUNT,
+    ROUND((a.TOTAL_COUNT / t.TOTAL_SUM) * 100, 2) AS PERCENTAGE
+FROM 
+    AgeBuckets a, TotalEmployees t
+ORDER BY 
+    PERCENTAGE DESC;
