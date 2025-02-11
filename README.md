@@ -1,5 +1,3 @@
-Sure, here is the revised version formatted for GitHub:
-
 # HR Analytics for Employee Performance and Training
 
 **Table of Contents**
