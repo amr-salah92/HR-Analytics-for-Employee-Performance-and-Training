@@ -1,40 +1,45 @@
-# HR-Analytics-for-Employee-Performance-and-Training
+Sure, here is the revised version formatted for GitHub:
+
+# HR Analytics for Employee Performance and Training
+
 **Table of Contents**
-
-1. Project Name
-2. Project Background
-3. Project Goals
-4. Insights and Recommendations
-   - Employee Demographics
-   - Employee Performance
-   - Employee Satisfaction
-   - Training and Development
-5. Data Structure & Initial Checks
-6. Executive Summary
-7. Insights Deep Dive
-   - Employee Demographics
-   - Employee Performance
-   - Employee Satisfaction
-   - Training and Development
-8. Recommendations
-9. Technical Details
-10. Assumptions and Caveats
-
----
-
-### **Project Name: HR Analytics for Employee Performance and Training**
-
-### **Project Background**
-
-As a data analyst at [Company Name], a firm operating in the [Industry] sector since [Year], we have accumulated extensive employee data over the years. Our business model focuses on [Business Model Details], and key metrics include employee performance ratings, satisfaction scores, and training outcomes. For instance, in [Year], our average employee performance rating was [X], with a satisfaction score of [Y] out of 5.
+1. [Project Name](#project-name)
+2. [Project Background](#project-background)
+3. [Project Goals](#project-goals)
+4. [Insights and Recommendations](#insights-and-recommendations)
+   - [Employee Demographics](#employee-demographics)
+   - [Employee Performance](#employee-performance)
+   - [Employee Satisfaction](#employee-satisfaction)
+   - [Training and Development](#training-and-development)
+5. [Data Structure & Initial Checks](#data-structure--initial-checks)
+6. [Executive Summary](#executive-summary)
+7. [Insights Deep Dive](#insights-deep-dive)
+   - [Employee Demographics](#employee-demographics-1)
+   - [Employee Performance](#employee-performance-1)
+   - [Employee Satisfaction](#employee-satisfaction-1)
+   - [Training and Development](#training-and-development-1)
+8. [Recommendations](#recommendations)
+9. [Technical Details](#technical-details)
+10. [Assumptions and Caveats](#assumptions-and-caveats)
 
 ---
 
-### **Project Goals**
+### Project Name
+
+**HR Analytics for Employee Performance and Training**
+
+### Project Background
+
+Acompany operates in the technology sector, specializing in developing innovative solutions for clients worldwide. Since its inception, the company has grown rapidly, expanding its workforce to include a diverse array of professionals across various departments such as Research and Development, Sales and Marketing, Human Resources, and Customer Support.
+
+With a strong emphasis on employee growth and organizational culture, The company recognizes that its success is deeply tied to its people. The company is committed to understanding the factors that influence employee satisfaction, performance, and retention. By leveraging HR analytics, the organization aims to identify trends and patterns within its workforce to make data-driven decisions that enhance employee engagement and reduce turnover.
+
+The dataset used for this analysis is sourced from a comprehensive HR dataset available on Kaggle. This dataset includes employee demographics, education levels, experience, training hours, and target labels indicating their intention to leave the company.
+---
+
+### Project Goals
 
 The primary objective of this analysis is to delve into our HR data to uncover patterns and insights that can inform strategic decisions. Specifically, we aim to:
-
-- Analyze employee demographics to understand the composition of our workforce.
 - Evaluate performance metrics to identify high and low performers.
 - Assess satisfaction levels to pinpoint areas needing improvement.
 - Examine training and development data to determine its impact on performance and retention.
@@ -43,67 +48,74 @@ By achieving these goals, we can implement targeted interventions to enhance emp
 
 ---
 
-### **Insights and Recommendations**
+### Insights and Recommendations
 
-#### **Employee Demographics**
+#### Employee Demographics
 
-- **Insight 1:** A significant portion of our workforce is concentrated in the [X] age bracket, indicating a [young/aging] workforce.
-- **Insight 2:** The majority of employees are located in [State/Country], suggesting potential for expansion in other regions.
-- **Insight 3:** The [Division/Department] has the highest number of employees, highlighting its central role in our operations.
+- **Insight 1:** The majority of employees are located in Massachusetts, accounting for nearly 89% of the company's total active workforce.
+- **Insight 2:** The Field Operations Division has the highest number of employees (27% of total employees), highlighting its central role in operations.
 
-**Recommendation:** Develop targeted programs to support the predominant age group and consider strategies to diversify the geographical distribution of our workforce.
+**Recommendation:** Develop targeted programs to support the predominant age group and implement strategies to diversify the geographical distribution of the workforce to enhance operational efficiency and reach.
 
-#### **Employee Performance**
+#### Employee Performance
 
-- **Insight 1:** Employees in the [Title/Position] role have an average performance rating of [X], which is [above/below] the company average.
-- **Insight 2:** There is a correlation between [EmployeeType] and performance, with [Type A] employees outperforming [Type B] employees.
-- **Insight 3:** Employees with [X] years of tenure tend to have higher performance ratings, suggesting the value of experience.
+- **Insight 1:** Employees in the Sales and Marketing Division have an average performance rating of 3.2143, which is above the company average. Additionally, 75% of employees in this division exceed the company average.
+- **Insight 2:** There is a correlation between Employee Type and performance, with Type A employees consistently outperforming Type B employees.
+- **Insight 3:** Employees with 3 to 6 years of tenure tend to have higher performance ratings, underscoring the value of experience.
+- **Insight 4:** The top overall-rated supervisors are Felicia Gomez, Diana Good, and Dawn Smith DDS.
+- **Insight 5:** Nearly 18% of employees aged 70-79 received ratings between 4 and 5, particularly those aged 76 and 71, indicating a highly experienced and dedicated workforce. Additionally, 34% of employees aged 30-49 received similar ratings, with notable peaks at ages 46 and 29.
+- **Insight 6:** A noticeable dip in ratings is observed among employees with 5-6 years of service, following a peak in the fourth year.
 
-**Recommendation:** Recognize and reward high-performing roles and consider mentorship programs to leverage the experience of long-tenured employees.
+**Recommendation:** Establish targeted mentorship and coaching programs to support mid-tenure employees and sustain their performance levels. Recognize and reward high-performing employees to maintain motivation and retention.
 
-#### **Employee Satisfaction**
+#### Employee Satisfaction
 
-- **Insight 1:** Satisfaction scores are highest among employees in the [BusinessUnit], with an average score of [X].
-- **Insight 2:** There is a noticeable dip in satisfaction among employees with [Y] years of service.
-- **Insight 3:** [EmployeeType] employees report lower satisfaction levels compared to their peers.
+- **Insight 1:** Satisfaction scores are highest among employees in the Safety Department, with an average score of 3.8571.
+- **Insight 2:** A decline in satisfaction is observed among employees with 2-4 years of service, following an initial peak in the first year.
+- **Insight 3:** Part-time employees report lower satisfaction levels compared to their full-time counterparts.
+- **Insight 4:** There is a negative correlation between satisfaction scores and current employee ratings.
 
-**Recommendation:** Conduct focus groups to understand the drivers of satisfaction in high-scoring units and address concerns among less satisfied employee groups.
+**Recommendation:** Conduct regular engagement surveys and focus groups to understand the factors contributing to dissatisfaction and develop strategies to improve job satisfaction, particularly among mid-tenure and part-time employees.
 
-#### **Training and Development**
+#### Training and Development
 
-- **Insight 1:** The [Training Program Name] has the highest participation rate, with [X]% of employees attending.
-- **Insight 2:** Employees who completed [Training Type] programs have a [Y]% higher performance rating on average.
-- **Insight 3:** There is a [Z]% turnover rate among employees who did not participate in any training programs.
+- **Insight 1:** The highest participation rates are seen in Project Management and Communication Skills training, with 11% of employees attending each.
+- **Insight 2:** Employees who completed Project Management and Communication Skills training programs demonstrate a 77% higher performance rating.
+- **Insight 3:** The turnover rate among employees who failed any training program is 19%.
+- **Insight 4:** The Field Operations Division leads in training participation, particularly for the Junior Production Technician role, which comprises 44% of total company employees.
+- **Insight 5:** The company appears to invest in premium training programs (one trainer per employee), resulting in higher success rates and lower failure rates for internal training compared to external training.
+- **Insight 6:** Project Management and Communication Skills are the most popular training programs among employees.
+- **Insight 7:** A significant portion (89%) of the training budget is allocated to Massachusetts.
 
-**Recommendation:** Expand successful training programs and encourage participation to enhance performance and reduce turnover.
+**Recommendation:** Optimize training costs by implementing group training sessions while maintaining high-quality instruction. Expand successful training programs to improve performance and reduce turnover. Evaluate trainer effectiveness to ensure strong learning outcomes.
 
----
+#### Employee Turnover & Hiring
 
-### **Recommendations**
+- **Insight 1:** The highest turnover rates are observed for Enterprise Systems Architects and Data Infrastructure Architects, with an 80% turnover rate per title.
+- **Insight 2:** The top hiring year for currently active, top-rated employees was 2021.
+
+**Recommendation:** Investigate the high turnover rates in key technical roles and implement retention strategies such as competitive compensation, career growth opportunities, and professional development programs. Focus on replicating successful hiring strategies from 2021 to attract top talent.
+
+### Recommendations
 
 Based on the insights and findings above, we recommend the HR team consider the following:
 
-1. **Address Workforce Aging Trends:** Develop succession planning initiatives and career development programs tailored to younger employees while creating retirement transition plans for senior staff.
-2. **Improve Employee Retention Strategies:** Implement targeted engagement programs for mid-tenure employees to prevent the observed decline in satisfaction and performance.
-3. **Refine Performance-Based Incentives:** Introduce rewards and recognition programs for high-performing employees, especially in key roles that drive business success.
-4. **Enhance Training Effectiveness:** Expand training programs that have proven beneficial in improving employee performance while discontinuing those with minimal impact.
-5. **Optimize Workforce Distribution:** Explore remote or hybrid work policies to attract and retain talent in underrepresented regions.
+1. **Enhance Workforce Distribution:** Implement flexible work arrangements to attract and retain talent in underrepresented regions and optimize workforce allocation.
+2. **Improve Employee Retention Strategies:** Introduce targeted engagement programs for mid-tenure employees to mitigate declines in satisfaction and performance.
+3. **Refine Performance-Based Incentives:** Establish recognition and reward systems for high-performing employees, particularly in key roles that drive business success.
+4. **Optimize Training and Development:** Expand high-impact training programs, promote cost-effective group training sessions, and evaluate training effectiveness for continuous improvement.
+5. **Reduce Turnover in Key Roles:** Address high turnover in critical technical positions through competitive benefits, career advancement opportunities, and targeted retention initiatives.
 
----
-
-### **Technical Details**
+### Technical Details
 
 For this analysis, we utilized:
-
 - **SQL:** Used for data cleaning, transformation, and querying to extract relevant employee insights.
-- **Tableau:** Developed interactive dashboards to visualize trends in employee demographics, performance, and satisfaction. 
+- **Tableau:** Developed interactive dashboards to visualize trends in employee demographics, performance, and satisfaction.
 
-The SQL queries used to inspect and clean the data for this analysis & Targeted SQL queries regarding various business questions can be found here [link]().
+The SQL queries used to inspect and clean the data for this analysis & targeted SQL queries regarding various business questions can be found here [link](https://github.com/amr-salah92/HR-Analytics-for-Employee-Performance-and-Training/blob/main/Human%20resource.sql).
 An interactive Tableau dashboard used to report and explore HR trends can be found here [link](https://public.tableau.com/app/profile/amr.salah6779/viz/training_17391989311920/TrainingDashboard#1).
 
----
-
-### **Assumptions and Caveats**
+### Assumptions and Caveats
 
 Throughout the analysis, multiple assumptions were made to manage challenges with the data. These assumptions and caveats are noted below:
 
@@ -112,8 +124,4 @@ Throughout the analysis, multiple assumptions were made to manage challenges wit
 3. **Geographical Data Accuracy:** Employees with missing location data were assigned based on their department's predominant location.
 4. **Training Impact Assessment:** The impact of training on performance was assumed based on post-training performance ratings rather than direct causal inference.
 5. **Performance Rating Bias:** The analysis assumes that performance ratings are fairly distributed without manager bias or rating inflation.
-
----
-
-This HR analytics report provides a data-driven approach to understanding employee performance, satisfaction, and development opportunities. By leveraging these insights, [Company Name] can create strategic HR policies to enhance workforce productivity and engagement.
 
