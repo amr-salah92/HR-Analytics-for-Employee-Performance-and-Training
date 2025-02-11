@@ -30,7 +30,7 @@ Sure, here is the revised version formatted for GitHub:
 
 ### Project Background
 
-Acompany operates in the technology sector, specializing in developing innovative solutions for clients worldwide. Since its inception, the company has grown rapidly, expanding its workforce to include a diverse array of professionals across various departments such as Research and Development, Sales and Marketing, Human Resources, and Customer Support.
+A company operates in the technology sector, specializing in developing innovative solutions for clients worldwide. Since its inception, the company has grown rapidly, expanding its workforce to include a diverse array of professionals across various departments such as Research and Development, Sales and Marketing, Human Resources, and Customer Support.
 
 With a strong emphasis on employee growth and organizational culture, The company recognizes that its success is deeply tied to its people. The company is committed to understanding the factors that influence employee satisfaction, performance, and retention. By leveraging HR analytics, the organization aims to identify trends and patterns within its workforce to make data-driven decisions that enhance employee engagement and reduce turnover.
 
