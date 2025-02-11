@@ -84,6 +84,7 @@ By achieving these goals, we can implement targeted interventions to enhance emp
 - **Insight 6:** Project Management and Communication Skills are the most popular training programs among employees.
 - **Insight 7:** A significant portion (89%) of the training budget is allocated to Massachusetts.
 - **Insight 8:** Technical skills has the lowest sucssess rate in all training programs .
+
 **Recommendation:** Optimize training costs by implementing group training sessions while maintaining high-quality instruction. Expand successful training programs to improve performance and reduce turnover. Evaluate trainer effectiveness to ensure strong learning outcomes. Introduce targeted interventions to improve technical skills training outcomes, such as tailored curriculam, enhanced hands-on learning, and mentorship initiatives.
 
 #### Employee Turnover & Hiring
