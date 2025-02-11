@@ -32,7 +32,6 @@ A company operates in the technology sector, specializing in developing innovati
 
 With a strong emphasis on employee growth and organizational culture, The company recognizes that its success is deeply tied to its people. The company is committed to understanding the factors that influence employee satisfaction, performance, and retention. By leveraging HR analytics, the organization aims to identify trends and patterns within its workforce to make data-driven decisions that enhance employee engagement and reduce turnover.
 
-The dataset used for this analysis is sourced from a comprehensive HR dataset available on Kaggle. This dataset includes employee demographics, education levels, experience, training hours, and target labels indicating their intention to leave the company.
 ---
 
 ### Project Goals
