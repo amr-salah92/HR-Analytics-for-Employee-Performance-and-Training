@@ -32,7 +32,6 @@ UPDATE cleand
 SET `Training Date` = STR_TO_DATE(`Training Date`, '%d/%m/%Y');
 
 
-
 -- Find duplicates and delete them
 WITH DUPLICATES AS (
     SELECT 
@@ -52,6 +51,58 @@ WHERE ID IN (
 
 -- Display cleaned Data
 SELECT * FROM cleand;
+
+
+
+
+-- max & min dob and age 
+SELECT MIN(dob) AS EARLIST_DOB,
+MAX(dob) AS NEWEST_DOB ,
+MIN(age) AS YOUNGEST,
+MAX(age)  AS OLDEST
+FROM cleand;
+
+-- max & min StartDate and ExitDate
+SELECT MIN(StartDate) AS FIRST_HIRING,
+MAX(StartDate) AS LAST_HIRING ,
+MIN(ExitDate) AS FIRST_RESIGN,
+MAX(ExitDate)  AS LAST_RESIGN
+FROM cleand;
+
+-- MIN & MAX Current Employee Rating 
+SELECT MIN(`Current Employee Rating`) ,
+MAX(`Current Employee Rating`)  
+FROM cleand;
+
+-- MIN & MAX Engagement Score
+SELECT MIN(`Engagement Score`) ,
+MAX(`Engagement Score`)  
+FROM cleand;
+
+-- MIN & MAX Satisfaction Score
+SELECT MIN(`Satisfaction Score`) ,
+MAX(`Satisfaction Score`)  
+FROM cleand;
+
+-- MIN & MAX Work-Life Balance Score
+SELECT MIN(`Work-Life Balance Score`) ,
+MAX(`Work-Life Balance Score`)  
+FROM cleand;
+
+-- MIN & MAX Training Date
+SELECT MIN(`Training Date`) ,
+MAX(`Training Date`)  
+FROM cleand;
+
+-- MIN & MAX Training Duration(Days)
+SELECT MIN(`Training Duration(Days)`) ,
+MAX(`Training Duration(Days)`)  
+FROM cleand;
+
+-- MIN & MAX Training Cost
+SELECT MIN(`Training Cost`) ,
+MAX(`Training Cost`)  
+FROM cleand;
 
 
 -- Check for typos, NULLs, and inconsistent categorical data
@@ -241,11 +292,11 @@ SET SQL_SAFE_UPDATES = 1;
 -- Calculate the total training cost for failed training programs for curret active employees
 SELECT 
     `Training Program Name`, 
-    ROUND(SUM(`Training Cost`), 2) AS TOTAL_COST
+    ROUND(SUM(`Training Cost`), 0) AS TOTAL_COST
 FROM 
     cleand
 WHERE 
-    `Training Outcome` = 'Failed' AND EmployeeStatus = 'Active'
+    `Training Outcome` = 'Failed' AND EmployeeStatus = 'Active' AND TerminationType = 'Unk'
 GROUP BY 
     `Training Program Name`
 ORDER BY 
@@ -260,7 +311,7 @@ SELECT
 FROM 
     cleand
 WHERE 
-    `Training Outcome` = 'Failed' AND EmployeeStatus = 'Active'
+    `Training Outcome` = 'Failed' AND EmployeeStatus = 'Active' AND TerminationType = 'Unk'
 GROUP BY 
     Trainer, `Training Program Name`
 ORDER BY 
@@ -269,48 +320,147 @@ ORDER BY
 -- Determine the best training program based on successful training outcomes and total training cost
 SELECT 
     `Training Program Name`, 
-    ROUND(SUM(`Training Cost`), 2) AS TOTAL_COST
+    ROUND(SUM(`Training Cost`), 0) AS TOTAL_COST
 FROM 
     cleand
 WHERE 
-    `Training Outcome` = 'Passed' AND EmployeeStatus = 'Active'
+    `Training Outcome` = 'Passed' AND EmployeeStatus = 'Active' AND TerminationType = 'Unk'
 GROUP BY 
     `Training Program Name`
 ORDER BY 
     TOTAL_COST DESC;
         
+-- Determine the most important training program based on the number of participants
+-- Define the CTE to calculate the total number of active employees
+WITH TotalEmployees AS (
+    SELECT 
+        COUNT(*) AS TOTAL_EMPLOYEES
+    FROM 
+        cleand
+    WHERE 
+        EmployeeStatus = 'Active' AND TerminationType = 'Unk'
+),
+TrainingProgramCounts AS (
+    SELECT 
+        `Training Program Name`, 
+        COUNT(*) AS TOTAL_Participants
+    FROM 
+        cleand
+    WHERE 
+        EmployeeStatus = 'Active' AND TerminationType = 'Unk'
+        AND (`Training Outcome` = 'Passed' OR `Training Outcome` = 'Complete' OR `Training Outcome` = 'Incomplete')
+    GROUP BY 
+        `Training Program Name`
+)
+-- Calculate the percentage of participants for each training program
+SELECT 
+    t.`Training Program Name`,
+    t.TOTAL_Participants,
+    ROUND((t.TOTAL_Participants / e.TOTAL_EMPLOYEES) * 100, 2) AS Percentage_of_Total
+FROM 
+    TrainingProgramCounts t
+JOIN 
+    TotalEmployees e
+ORDER BY 
+    Percentage_of_Total DESC;
+
+ -- Identify the training programs with the highest success rate
+ SELECT `Training Program Name`, 
+       ROUND(COUNT(CASE WHEN `Training Outcome` = 'Passed'  THEN 1 END) * 100.0 / COUNT(*),0) AS Success_Rate
+FROM cleand
+GROUP BY `Training Program Name`
+ORDER BY Success_Rate DESC;     
+        
+        
 -- Evaluate if the company should redirect investment from internal to external training based on training outcomes and costs
 SELECT 
     `Training Type`,
     `Training Outcome`,
-    ROUND(SUM(`Training Cost`), 2) AS TOTAL_COST
+    ROUND(SUM(`Training Cost`), 0) AS TOTAL_COST
 FROM 
     cleand
 WHERE 
-    EmployeeStatus = 'Active' AND `Training Outcome` = 'Passed'
+    EmployeeStatus = 'Active' AND `Training Outcome` = 'Passed' AND TerminationType = 'Unk'
 GROUP BY 
     `Training Type`, 
     `Training Outcome`
 ORDER BY
-     `Training Type` DESC;
+     TOTAL_COST DESC;
  
--- Identify the training programs with the highest success rate
- SELECT `Training Program Name`, 
-       COUNT(CASE WHEN `Training Outcome` = 'Passed' THEN 1 END) * 100.0 / COUNT(*) AS Success_Rate
-FROM cleand
-GROUP BY `Training Program Name`
-ORDER BY Success_Rate DESC;
+ -- Evaluate internal & external training based on training outcomes and costs of former employees results 
+SELECT 
+    `Training Type`,
+    `Training Outcome`,
+    ROUND(SUM(`Training Cost`), 0) AS TOTAL_COST
+FROM 
+    cleand
+WHERE 
+    `Training Outcome` = 'Failed' AND TerminationType <> 'Unk'
+GROUP BY 
+    `Training Type`, 
+    `Training Outcome`
+ORDER BY
+     TOTAL_COST DESC;
 
+   
+-- calculate the number of employees passing the training program and the percentage of these employees with an above-average Current Employee Rating
+-- Define the CTE to calculate the average rating
+WITH AvgRating AS (
+    SELECT 
+        AVG(`Current Employee Rating`) AS Avg_Rating
+    FROM 
+        cleand
+    WHERE 
+        EmployeeStatus = 'Active' AND TerminationType = 'Unk'
+),
+PassedTraining AS (
+    SELECT 
+        `Training Program Name`,
+        COUNT(*) AS TOTAL_Participants
+    FROM 
+        cleand
+    WHERE 
+        EmployeeStatus = 'Active' 
+        AND `Training Outcome` = 'Passed' AND TerminationType = 'Unk'
+    GROUP BY 
+        `Training Program Name`
+),
+AboveAverage AS (
+    SELECT 
+        `Training Program Name`,
+        COUNT(*) AS Num_Above_Avg
+    FROM 
+        cleand c
+    JOIN 
+        AvgRating ar ON c.`Current Employee Rating` > ar.Avg_Rating
+    WHERE 
+        c.EmployeeStatus = 'Active' 
+        AND `Training Outcome` = 'Passed' AND TerminationType = 'Unk'
+    GROUP BY 
+        `Training Program Name`
+)
+-- Calculate the number and percentage of employees passing the training program with above-average ratings
+SELECT 
+    p.`Training Program Name`,
+    p.TOTAL_Participants,
+    a.Num_Above_Avg,
+    ROUND((a.Num_Above_Avg / p.TOTAL_Participants) * 100, 2) AS Percentage_Above_Avg
+FROM 
+    PassedTraining p
+JOIN 
+    AboveAverage a ON p.`Training Program Name` = a.`Training Program Name`
+ORDER BY 
+    Percentage_Above_Avg DESC;
  
-    
--- Hiring trend Per Years
+ 
+-- Hiring trend for top rating currently active employees Per Years
 SELECT 
     YEAR(StartDate) AS Hire_Year,
     COUNT(*) AS Num_Hires
 FROM 
     cleand
 WHERE 
-    `Current Employee Rating` = 5 AND EmployeeStatus = 'Active' 
+    `Current Employee Rating` = 5 AND EmployeeStatus = 'Active'  AND TerminationType = 'Unk'
 GROUP BY 
     Hire_Year
 ORDER BY 
@@ -331,11 +481,10 @@ WITH TOP_SUPER AS (
     FROM 
         cleand
     WHERE 
-        EmployeeStatus = 'Active'
+        EmployeeStatus = 'Active' AND TerminationType = 'Unk'
     GROUP BY 
         Supervisor
 )
-
 -- Select top 10 supervisors
 SELECT 
     Supervisor,
@@ -353,42 +502,106 @@ ORDER BY
     RANKS;
 
 
--- Total cost for passed Active Employees per states
+-- Total cost & percent for in Training (passed training - complete training - incomplete training )  Active Employees per states
+-- Define the CTE to calculate the total training cost
+WITH TotalTrainingCost AS (
+    SELECT 
+        SUM(`Training Cost`) AS TotalCost
+    FROM 
+        cleand
+    WHERE 
+        EmployeeStatus = 'Active' AND TerminationType = 'Unk' AND `Training Outcome` = 'Passed' OR `Training Outcome` = 'Completed' OR `Training Outcome` = 'Incomplete'
+),
+StateTrainingCost AS (
+    SELECT 
+        State,
+        ROUND(SUM(`Training Cost`), 0) AS TotalCostPerState
+    FROM 
+        cleand
+    WHERE 
+        EmployeeStatus = 'Active' AND TerminationType = 'Unk' AND `Training Outcome` = 'Passed' OR `Training Outcome` = 'Completed' OR `Training Outcome` = 'Incomplete'
+    GROUP BY 
+        State
+)
+-- Calculate the percentage of training cost for each state
 SELECT 
-    State ,
-    `Training Outcome` ,
-    ROUND(SUM(`Training Cost`), 0) AS TOTAL_COST
+    s.State,
+    s.TotalCostPerState,
+    ROUND((s.TotalCostPerState / t.TotalCost) * 100, 2) AS Percentage
 FROM 
-    cleand
-WHERE 
-    EmployeeStatus = 'Active' AND `Training Outcome` = 'Passed'
-GROUP BY 
-  State
-ORDER BY
-    TOTAL_COST DESC;
+    StateTrainingCost s, TotalTrainingCost t
+ORDER BY 
+    Percentage DESC;
+
     
--- Total cost for Failed Active Employees per states 
+-- calculates the total training cost for failed active employees per state
+-- Define the CTE to calculate the total cost of training for all failed active employees
+WITH TotalFailedTrainingCost AS (
+    SELECT 
+        ROUND(SUM(`Training Cost`), 0) AS Grand_Total_Cost
+    FROM 
+        cleand
+    WHERE 
+        EmployeeStatus = 'Active' 
+        AND `Training Outcome` = 'Failed' 
+        AND TerminationType = 'Unk'
+),
+StateTrainingCost AS (
+    SELECT 
+        State,
+        ROUND(SUM(`Training Cost`), 0) AS TOTAL_COST
+    FROM 
+        cleand
+    WHERE 
+        EmployeeStatus = 'Active' 
+        AND `Training Outcome` = 'Failed' 
+        AND TerminationType = 'Unk'
+    GROUP BY 
+        State
+)
+-- Calculate the total cost and percentage of total cost per state
 SELECT 
-    State ,
-    `Training Outcome` ,
-    ROUND(SUM(`Training Cost`), 0) AS TOTAL_COST
+    s.State,
+    s.TOTAL_COST,
+    ROUND((s.TOTAL_COST / t.Grand_Total_Cost) * 100, 2) AS Percentage_of_Total_Cost
 FROM 
-    cleand
-WHERE 
-    EmployeeStatus = 'Active' AND `Training Outcome` = 'Failed'
-GROUP BY 
-  State
-ORDER BY
-    TOTAL_COST DESC;
-    
-    
--- top 5 supervisors with the highest employee retention rate.
-SELECT Supervisor, 
-       COUNT(CASE WHEN EmployeeStatus = 'Active' THEN 1 END) * 1.0 / COUNT(*) AS Retention_Rate
-FROM cleand
-GROUP BY Supervisor
-ORDER BY Retention_Rate DESC
-LIMIT 5;
+    StateTrainingCost s
+JOIN 
+    TotalFailedTrainingCost t ON 1=1
+ORDER BY 
+    s.TOTAL_COST DESC;
+
+
+
+
+ -- turnover rate in failed employees  
+-- Define the CTE to calculate total employees who failed the training
+WITH FailedTraining AS (
+    SELECT 
+        COUNT(*) AS TOTAL_FAILED
+    FROM 
+        cleand
+    WHERE 
+        `Training Outcome` = 'Failed' 
+),
+TurnoverFailedTraining AS (
+    SELECT 
+        COUNT(*) AS TOTAL_LEFT
+    FROM 
+        cleand
+    WHERE 
+        `Training Outcome` = 'Failed' 
+        AND EmployeeStatus <> 'Active' AND TerminationType <> 'Unk'
+)
+-- Calculate the turnover rate
+SELECT 
+    f.TOTAL_FAILED,
+    t.TOTAL_LEFT,
+    ROUND((t.TOTAL_LEFT / f.TOTAL_FAILED) * 100, 2) AS Turnover_Rate
+FROM 
+    FailedTraining f, TurnoverFailedTraining t;
+   
+  
 
 -- the average Satisfaction Score for each Current Employee Rating .
 SELECT `Current Employee Rating`, 
@@ -402,35 +615,18 @@ ORDER BY Avg_Satisfaction DESC;
 SELECT Age ,
 COUNT(*) AS TOTAL_COUNT
 FROM cleand
-WHERE EmployeeStatus = 'Active'  AND `Current Employee Rating` BETWEEN 4 AND 5 
-GROUP BY Age ;
-
-
--- age Analysis (Best Rating Age Bucket)
-SELECT  
-CASE  
-WHEN Age BETWEEN 23 AND 29  THEN '20_BUCKET' 
-WHEN Age BETWEEN 30 AND 39  THEN '30_BUCKET' 
-WHEN Age BETWEEN 40 AND 49 THEN '40_BUCKET' 
-WHEN Age BETWEEN 50 AND 59  THEN '50_BUCKET' 
-WHEN Age BETWEEN 60 AND 69  THEN '60_BUCKET' 
-WHEN Age BETWEEN 70 AND 79 THEN '70_BUCKET' 
-WHEN Age BETWEEN 80 AND 89 THEN '80_BUCKET' 
-ELSE 'OTHERS'
-END AS AGE_BUCKET,
-COUNT(*) AS TOTAL_COUNT
-FROM cleand
-WHERE EmployeeStatus = 'Active'  AND `Current Employee Rating` BETWEEN 4 AND 5 
-GROUP BY AGE_BUCKET 
+WHERE EmployeeStatus = 'Active' AND TerminationType = 'Unk' AND `Current Employee Rating` BETWEEN 4 AND 5 
+GROUP BY Age 
 ORDER BY TOTAL_COUNT DESC;
 
 
 
+-- age buckets and percent
 -- Define the CTE to calculate the total sum of employees
 WITH TotalEmployees AS (
     SELECT COUNT(*) AS TOTAL_SUM
     FROM cleand
-    WHERE EmployeeStatus = 'Active' AND `Current Employee Rating` BETWEEN 4 AND 5
+    WHERE EmployeeStatus = 'Active' AND TerminationType = 'Unk' AND `Current Employee Rating` BETWEEN 4 AND 5
 ),
 AgeBuckets AS (
     SELECT 
@@ -448,7 +644,7 @@ AgeBuckets AS (
     FROM 
         cleand
     WHERE 
-        EmployeeStatus = 'Active' 
+        EmployeeStatus = 'Active' AND TerminationType = 'Unk'
         AND `Current Employee Rating` BETWEEN 4 AND 5
     GROUP BY 
         AGE_BUCKET
@@ -462,3 +658,270 @@ FROM
     AgeBuckets a, TotalEmployees t
 ORDER BY 
     PERCENTAGE DESC;
+
+
+-- Number of employees in each division 
+-- Define the CTE to calculate the total number of active employees
+WITH TotalEmployees AS (
+    SELECT 
+        COUNT(*) AS TOTAL_SUM
+    FROM 
+        cleand
+    WHERE 
+        EmployeeStatus = 'Active' AND TerminationType = 'Unk'
+),
+DivisionCounts AS (
+    SELECT 
+        Division,
+        COUNT(*) AS TOTAL_COUNT
+    FROM 
+        cleand
+    WHERE 
+        EmployeeStatus = 'Active' AND TerminationType = 'Unk'
+    GROUP BY 
+        Division
+)
+-- Calculate the percentage of employees in each division
+SELECT 
+    d.Division,
+    d.TOTAL_COUNT,
+    ROUND((d.TOTAL_COUNT / t.TOTAL_SUM) * 100, 2) AS PERCENTAGE
+FROM 
+    DivisionCounts d
+JOIN 
+    TotalEmployees t
+ORDER BY 
+    d.TOTAL_COUNT DESC;
+
+
+-- percent of Top Rated Employees for each division with age bucket 
+-- Define the CTE to calculate the total sum of employees in each division
+WITH TotalEmployees AS (
+    SELECT 
+        Division,
+        COUNT(*) AS TOTAL_SUM
+    FROM 
+        cleand
+    WHERE 
+        EmployeeStatus = 'Active' AND  TerminationType = 'Unk' AND `Current Employee Rating` BETWEEN 4 AND 5
+    GROUP BY 
+        Division
+),
+AgeBuckets AS (
+    SELECT 
+        Division,
+        CASE 
+            WHEN Age BETWEEN 23 AND 29 THEN '20_BUCKET'
+            WHEN Age BETWEEN 30 AND 39 THEN '30_BUCKET'
+            WHEN Age BETWEEN 40 AND 49 THEN '40_BUCKET'
+            WHEN Age BETWEEN 50 AND 59 THEN '50_BUCKET'
+            WHEN Age BETWEEN 60 AND 69 THEN '60_BUCKET'
+            WHEN Age BETWEEN 70 AND 79 THEN '70_BUCKET'
+            WHEN Age BETWEEN 80 AND 89 THEN '80_BUCKET'
+            ELSE 'OTHER'
+        END AS AGE_BUCKET,
+        COUNT(*) AS TOTAL_COUNT
+    FROM 
+        cleand
+    WHERE 
+        EmployeeStatus = 'Active' AND TerminationType = 'Unk'
+        AND `Current Employee Rating` BETWEEN 4 AND 5
+    GROUP BY 
+        Division, AGE_BUCKET
+)
+-- Calculate the percentage of each age bucket within each division
+SELECT 
+    a.Division,
+    a.AGE_BUCKET,
+    a.TOTAL_COUNT,
+    ROUND((a.TOTAL_COUNT / t.TOTAL_SUM) * 100, 2) AS PERCENTAGE
+FROM 
+    AgeBuckets a
+JOIN 
+    TotalEmployees t ON a.Division = t.Division
+ORDER BY 
+    a.Division, PERCENTAGE DESC;
+
+
+-- Calculate the average ratings for each division
+WITH AvgRatings AS (
+    SELECT 
+        Division,
+        AVG(`Current Employee Rating`) AS Avg_Current_Employee_Rating,
+        AVG(`Engagement Score`) AS Avg_Engagement_Score,
+        AVG(`Satisfaction Score`) AS Avg_Satisfaction_Score,
+        AVG(`Work-Life Balance Score`) AS Avg_Work_Life_Balance_Score
+    FROM 
+        cleand
+    WHERE 
+        EmployeeStatus = 'Active'
+    GROUP BY 
+        Division
+)
+-- Calculate the total average of the average ratings
+SELECT 
+    Division,
+    Avg_Current_Employee_Rating,
+    Avg_Engagement_Score,
+    Avg_Satisfaction_Score,
+    Avg_Work_Life_Balance_Score,
+    (Avg_Current_Employee_Rating + Avg_Engagement_Score + Avg_Satisfaction_Score + Avg_Work_Life_Balance_Score) / 4 AS TOTAL_AVG
+FROM 
+    AvgRatings
+ORDER BY 
+    TOTAL_AVG DESC;
+
+
+-- EMPLOYEES ABOVE THE AVERAE 
+-- Define the CTE to calculate the average rating
+WITH AvgRating AS (
+    SELECT 
+        AVG(`Current Employee Rating`) AS Avg_Rating
+    FROM 
+        cleand
+    WHERE 
+        EmployeeStatus = 'Active' AND TerminationType = 'Unk'
+),
+DivisionCounts AS (
+    SELECT 
+        Division,
+        COUNT(*) AS TOTAL_COUNT
+    FROM 
+        cleand
+    WHERE 
+        EmployeeStatus = 'Active' AND TerminationType = 'Unk'
+    GROUP BY 
+        Division
+),
+DivisionAboveAvg AS (
+    SELECT 
+        c.Division,
+        COUNT(*) AS Num_Employees_Above_Average
+    FROM 
+        cleand c
+    JOIN 
+        AvgRating ar ON c.`Current Employee Rating` > ar.Avg_Rating
+    WHERE 
+        c.EmployeeStatus = 'Active' AND TerminationType = 'Unk'
+    GROUP BY 
+        c.Division
+)
+-- Calculate the number and percentage of employees in each division with a rating above the average
+SELECT 
+    d.Division,
+    d.Num_Employees_Above_Average,
+    ROUND((d.Num_Employees_Above_Average / dc.TOTAL_COUNT) * 100, 2) AS Percentage_Above_Average
+FROM 
+    DivisionAboveAvg d
+JOIN 
+    DivisionCounts dc ON d.Division = dc.Division
+ORDER BY 
+    Percentage_Above_Average DESC;
+    
+-- Years of experience in the company and rating
+SELECT 
+    FLOOR(DATEDIFF(CURDATE(), StartDate) / 365) AS Y_EXPERIENCE,
+    COUNT(*) AS TOTAL_COUNT,
+    AVG(`Current Employee Rating`) AS AVG_RATING
+FROM 
+    cleand
+WHERE 
+    EmployeeStatus = 'Active' AND TerminationType = 'Unk'
+GROUP BY 
+    Y_EXPERIENCE
+ORDER BY AVG_RATING DESC;
+
+-- Years of experience in the company and satisfaction score
+SELECT 
+    FLOOR(DATEDIFF(CURDATE(), StartDate) / 365) AS Y_EXPERIENCE,
+    COUNT(*) AS TOTAL_COUNT,
+    AVG(`Satisfaction Score`) AS AVG_SAT_RATING
+FROM 
+    cleand
+WHERE 
+    EmployeeStatus = 'Active' AND TerminationType = 'Unk'
+GROUP BY 
+    Y_EXPERIENCE
+ORDER BY AVG_SAT_RATING DESC;
+
+-- employee type and satisfaction score
+SELECT 
+    `EmployeeType`,
+    AVG(`Satisfaction Score`) AS AVG_SAT_RATING
+FROM 
+    cleand
+WHERE 
+    EmployeeStatus = 'Active' AND TerminationType = 'Unk'
+GROUP BY 
+    `EmployeeType`
+ORDER BY AVG_SAT_RATING DESC;
+
+ 
+-- Calculate the number of active employees per title
+-- Define the CTE to calculate the total number of active employees
+WITH TotalActiveEmployees AS (
+    SELECT 
+        COUNT(*) AS TOTAL_ACTIVE
+    FROM 
+        cleand
+    WHERE 
+        EmployeeStatus = 'Active' AND TerminationType = 'Unk'
+),
+TitleActiveEmployees AS (
+    SELECT 
+        Title,
+        COUNT(*) AS Num_Active_Employees
+    FROM 
+        cleand
+    WHERE 
+        EmployeeStatus = 'Active' AND TerminationType = 'Unk'
+    GROUP BY 
+        Title
+)
+-- Calculate the percentage of active employees for each title
+SELECT 
+    t.Title,
+    t.Num_Active_Employees,
+    ROUND((t.Num_Active_Employees / e.TOTAL_ACTIVE) * 100, 2) AS Percentage_of_Total
+FROM 
+    TitleActiveEmployees t
+JOIN 
+    TotalActiveEmployees e
+ORDER BY 
+    Percentage_of_Total DESC;
+    
+-- turnover per title    
+-- Define the CTE to calculate the total number of employees per title
+WITH TotalPerTitle AS (
+    SELECT 
+        Title,
+        COUNT(*) AS Total_Per_Title
+    FROM 
+        cleand
+    GROUP BY 
+        Title
+),
+LeftPerTitle AS (
+    SELECT 
+        Title,
+        COUNT(*) AS Total_Left
+    FROM 
+        cleand
+    WHERE 
+        EmployeeStatus <> 'Active' AND TerminationType <> 'Unk'
+    GROUP BY 
+        Title
+)
+-- Calculate the turnover rate per title
+SELECT 
+    t.Title,
+    t.Total_Per_Title,
+    l.Total_Left,
+    ROUND((l.Total_Left / t.Total_Per_Title) * 100, 2) AS Turnover_Rate
+FROM 
+    TotalPerTitle t
+JOIN 
+    LeftPerTitle l ON t.Title = l.Title
+ORDER BY 
+    Turnover_Rate DESC;
+
