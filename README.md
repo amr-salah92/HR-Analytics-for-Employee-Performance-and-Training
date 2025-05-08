@@ -43,6 +43,11 @@ The primary objective of this analysis is to delve into our HR data to uncover p
 
 By achieving these goals, we can implement targeted interventions to enhance employee satisfaction, boost performance, and reduce turnover.
 
+
+### Regulatory Reporting
+- Compliance: Aligned with GDPR and EEOC standards by anonymizing employee IDs in reporting.
+- Audit Trails: Resolved 1,200+ inconsistent termination records (e.g., "Unk" → "Voluntary"/"Involuntary").
+
 ---
 
 ### Insights and Recommendations
@@ -86,6 +91,17 @@ By achieving these goals, we can implement targeted interventions to enhance emp
 - **Insight 8:** Technical skills has the lowest sucssess rate in all training programs .
 
 **Recommendation:** Optimize training costs by implementing group training sessions while maintaining high-quality instruction. Expand successful training programs to improve performance and reduce turnover. Evaluate trainer effectiveness to ensure strong learning outcomes. Introduce targeted interventions to improve technical skills training outcomes, such as tailored curriculam, enhanced hands-on learning, and mentorship initiatives.
+
+#### Data Structure & Initial Checks
+- Main Table: cleand (3,200 rows)
+
+Columns:
+- Demographics: ID, DOB, State, GenderCode.
+- Employment: StartDate, ExitDate, Title, EmployeeStatus.
+- Performance: Current Employee Rating, Engagement Score.
+- Training: Training Program Name, Training Cost, Training Outcome.
+- Usage Notes: Pre-cleaning, 18% of records had formatting issues (e.g., ExitDate as text).
+
 
 #### Employee Turnover & Hiring
 
