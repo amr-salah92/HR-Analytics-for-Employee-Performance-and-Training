@@ -45,7 +45,7 @@ By achieving these goals, we can implement targeted interventions to enhance emp
 
 
 ### Regulatory Reporting
-- Compliance: Aligned with GDPR and EEOC standards by anonymizing employee IDs in reporting.
+
 - Audit Trails: Resolved 1,200+ inconsistent termination records (e.g., "Unk" → "Voluntary"/"Involuntary").
 
 ---
@@ -61,19 +61,20 @@ By achieving these goals, we can implement targeted interventions to enhance emp
 
 #### Employee Performance
 
-- **Insight 1:** Employees in the Sales and Marketing Division have an average performance rating of 3.2143, which is above the company average. Additionally, 75% of employees in this division exceed the company average.
-- **Insight 2:** There is a correlation between Employee Type and performance, with Type A employees consistently outperforming Type B employees.
-- **Insight 3:** Employees with 3 to 6 years of tenure tend to have higher performance ratings, underscoring the value of experience.
-- **Insight 4:** The top overall-rated supervisors are Felicia Gomez, Diana Good, and Dawn Smith DDS.
-- **Insight 5:** Nearly 18% of employees aged 70-79 received ratings between 4 and 5, particularly those aged 76 and 71, indicating a highly experienced and dedicated workforce. Additionally, 34% of employees aged 30-49 received similar ratings, with notable peaks at ages 46 and 29.
-- **Insight 6:** A noticeable dip in ratings is observed among employees with 5-6 years of service, following a peak in the fourth year.
+- **Insight 1:** Employees in the Sales and Marketing Division have an average performance rating of 3.2857, which is above the company average (2.9601). 
+- **Insight 2:** There is a correlation between Employee Type and performance, with Part time employees consistently outperforming full time employees.
+- **Insight 3:** Employees with 3 to 5 years of tenure tend to have higher performance ratings, underscoring the value of experience.
+- **Insight 4:** The top overall-rated supervisors are George Jenkins , Troy White , Mark Harris , Patricia Smith , Tina Nelson ,Eric Taylor ,
+Barbara Garcia.
+- **Insight 5:**  employees aged  20 - 39 & 70-79 received ratings above 3 "Highest" , particularly those aged 76 and 71, indicating a highly experienced and dedicated workforce.
+- **Insight 6:** A noticeable dip in ratings is observed among employees with 6 years of service, following a peak in the seventh year.
 
 **Recommendation:** Establish targeted mentorship and coaching programs to support mid-tenure employees and sustain their performance levels. Recognize and reward high-performing employees to maintain motivation and retention.
 
 #### Employee Satisfaction
 
 - **Insight 1:** Satisfaction scores are highest among employees in the Safety Department, with an average score of 3.8571.
-- **Insight 2:** A decline in satisfaction is observed among employees with 2-4 years of service, following an initial peak in the first year.
+- **Insight 2:** A decline in satisfaction is observed among employees with 4-6 years of service, following an initial peak in the seventh year.
 - **Insight 3:** Part-time employees report lower satisfaction levels compared to their full-time counterparts.
 - **Insight 4:** There is a negative correlation between satisfaction scores and current employee ratings.
 
@@ -81,10 +82,10 @@ By achieving these goals, we can implement targeted interventions to enhance emp
 
 #### Training and Development
 
-- **Insight 1:** The highest participation rates are seen in Project Management and Communication Skills training, with 11% of employees attending each.
-- **Insight 2:** Employees who completed Project Management and Communication Skills training programs demonstrate a 77% higher performance rating.
-- **Insight 3:** The turnover rate among employees who failed any training program is 19%.
-- **Insight 4:** The Field Operations Division leads in training participation, particularly for the Junior Production Technician role, which comprises 44% of total company employees.
+- **Insight 1:** The highest participation rates are seen in Project Management and Communication Skills training, with < 20 % of employees attending each.
+- **Insight 2:** Employees who completed Project Management and Communication Skills training programs demonstrate a 0.5% higher performance rating.
+- **Insight 3:** The turnover rate among employees who failed any training program is 1.91%.
+- **Insight 4:** The Field Operations Division leads in training participation, particularly for the Junior Production Technician role, which comprises 43.72% of total company employees that attend training .
 - **Insight 5:** The company appears to invest in premium training programs (one trainer per employee), resulting in higher success rates and lower failure rates for internal training compared to external training.
 - **Insight 6:** Project Management and Communication Skills are the most popular training programs among employees.
 - **Insight 7:** A significant portion (89%) of the training budget is allocated to Massachusetts.
